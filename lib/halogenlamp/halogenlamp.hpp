@@ -3,9 +3,9 @@
 class halogenlamp {
  private:
   uint8_t pin;
-  uint8_t currentBrightness;
+  float currentBrightness;
   bool currentState;
-  uint8_t lastStateChangeBrightness;
+  float lastStateChangeBrightness;
   long lastStateChangeTimestamp = 0;
 
  public:

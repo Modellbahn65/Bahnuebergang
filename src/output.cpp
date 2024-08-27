@@ -16,8 +16,8 @@
 
 #define PIN_BU_1 10
 #define PIN_BU_2 9
-#define PIN_ORANGE 6
-#define PIN_WEISS_BW 3
+#define PIN_ORANGE 3
+#define PIN_WEISS_BW 6
 #define PIN_WEISS_LS 5
 
 #define OUTPUT_UPDATE_INTERVAL 10
@@ -31,11 +31,15 @@ halogenlamp blinkenBUphaseA = halogenlamp(PIN_BU_1, false);
 halogenlamp blinkenBUphaseB = halogenlamp(PIN_BU_2, false);
 halogenlamp orange = halogenlamp(PIN_ORANGE, true);
 
+void setupPWM();
+void highResAnalogWrite(uint8_t pin, uint16_t value);
+
 void setupOutput() {
   pinMode(LED_BUILTIN_RX, OUTPUT);
   pinMode(LED_BUILTIN_TX, OUTPUT);
   digitalWrite(LED_BUILTIN_RX, true);
   digitalWrite(LED_BUILTIN_TX, true);
+  setupPWM();
 }
 
 void processRequestedStateChange(uint8_t outputpair, bool direction) {

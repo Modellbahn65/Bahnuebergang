@@ -4,13 +4,13 @@
 // clamp output to range from 0 to 1
 #define CLAMP_ONE(x) min(max(x, 0), 1)
 
-uint8_t mapToLed(float progress, uint8_t out_min, uint8_t out_max) {
-  return round(progress * (out_max - out_min) + out_min);
+float mapRange(float progress, float out_min, float out_max) {
+  return progress * (out_max - out_min) + out_min;
 }
 
 #define GAMMA 2.2
 float ledBrightnessCorrection(float brightness) {
-  // return CLAMP_ONE(brightness * brightness); // gamma = 2
+  // return CLAMP_ONE(brightness * brightness);  // gamma = 2
   return CLAMP_ONE(pow(brightness, GAMMA));
 }
 
@@ -27,10 +27,10 @@ float halogenDimDown(float progress) {
  * @param state the state the lamp currently has
  * @param seconds the amount of seconds passed since state change
  */
-uint8_t dimHalogen(uint8_t preswitchbrightness, bool state, float seconds) {
-  return state ? mapToLed(ledBrightnessCorrection(halogenDimUp(seconds)),
-                          preswitchbrightness, 255)
-               : mapToLed(ledBrightnessCorrection(halogenDimDown(seconds)), 0,
+float dimHalogen(float preswitchbrightness, bool state, float seconds) {
+  return state ? mapRange(ledBrightnessCorrection(halogenDimUp(seconds)),
+                          preswitchbrightness, 1)
+               : mapRange(ledBrightnessCorrection(halogenDimDown(seconds)), 0,
                           preswitchbrightness);
 }
 
@@ -38,7 +38,7 @@ halogenlamp::halogenlamp(uint8_t pin, bool initialState) {
   this->nextState = initialState;
   this->currentState = initialState;
   this->pin = pin;
-  this->currentBrightness = initialState * 255;
+  this->currentBrightness = initialState;
   this->lastStateChangeTimestamp = millis();
   pinMode(this->pin, OUTPUT);
 #ifdef ARDUINO_ARCH_AVR
@@ -50,6 +50,8 @@ halogenlamp::halogenlamp(uint8_t pin, bool initialState) {
 #endif
 }
 
+void highResAnalogWrite(uint8_t pin, float value);
+
 void halogenlamp::process() {
   if (this->nextState != this->currentState) {
     this->lastStateChangeBrightness = this->currentBrightness;
@@ -59,5 +61,5 @@ void halogenlamp::process() {
   float seconds = (float)(millis() - this->lastStateChangeTimestamp) / 1000;
   this->currentBrightness =
       dimHalogen(this->lastStateChangeBrightness, this->currentState, seconds);
-  analogWrite(this->pin, this->currentBrightness);
+  highResAnalogWrite(this->pin, this->currentBrightness);
 }
