@@ -22,11 +22,11 @@
 
 #define OUTPUT_UPDATE_INTERVAL 10
 
-bool weissLS = true;
+bool weissLS = false;
 halogenlamp weissLSlamp = halogenlamp(PIN_WEISS_LS, false);
-bool weissBW = true;
+bool weissBW = false;
 halogenlamp weissBWlamp = halogenlamp(PIN_WEISS_BW, false);
-bool blinkenBU = true;
+bool blinkenBU = false;
 halogenlamp blinkenBUphaseA = halogenlamp(PIN_BU_1, false);
 halogenlamp blinkenBUphaseB = halogenlamp(PIN_BU_2, false);
 halogenlamp orange = halogenlamp(PIN_ORANGE, true);
