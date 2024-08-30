@@ -14,7 +14,6 @@ void setupPWM() {
 #define mapTo8bit(value) value * 255
 
 void highResAnalogWrite(uint8_t pin, float value) {
-  Serial.println(value);
   if (pin == 9 || pin == 10)
     return Timer1.pwm(pin, mapTo10bit(value));
   if (pin == 5)

@@ -8,17 +8,17 @@ float mapRange(float progress, float out_min, float out_max) {
   return progress * (out_max - out_min) + out_min;
 }
 
-#define GAMMA 2.2
+#define GAMMA 2.0
 float ledBrightnessCorrection(float brightness) {
   // return CLAMP_ONE(brightness * brightness);  // gamma = 2
   return CLAMP_ONE(pow(brightness, GAMMA));
 }
 
 float halogenDimUp(float progress) {
-  return CLAMP_ONE(1 - pow(EULER, -10 * progress));
+  return CLAMP_ONE(1 - pow(EULER, -20 * progress));
 }
 float halogenDimDown(float progress) {
-  return CLAMP_ONE(pow(EULER, -5 * (progress)));
+  return CLAMP_ONE(pow(EULER, -10 * (progress)));
 }
 
 /**

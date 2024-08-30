@@ -81,12 +81,20 @@ void processRequestedStateChange(uint8_t outputpair, bool direction) {
   }
 }
 
+void processPhase();
+bool getPhaseA();
+bool getPhaseB();
+
 void processLeds() {
-  bool phase = ((millis() / 1000) % 2) == 0;
-  blinkenBUphaseA.nextState = blinkenBU && phase;
-  blinkenBUphaseB.nextState = blinkenBU && !phase;
-  weissBWlamp.nextState = weissBW && phase;
-  weissLSlamp.nextState = weissLS && phase;
+  if (blinkenBU || weissBW || weissLS)
+    processPhase();
+  bool phaseA = getPhaseA();
+  bool phaseB = getPhaseB();
+
+  blinkenBUphaseA.nextState = blinkenBU && phaseA;
+  blinkenBUphaseB.nextState = blinkenBU && phaseB;
+  weissBWlamp.nextState = weissBW && phaseA;
+  weissLSlamp.nextState = weissLS && phaseA;
 
   weissLSlamp.process();
   weissBWlamp.process();
@@ -94,8 +102,8 @@ void processLeds() {
   blinkenBUphaseB.process();
   orange.process();
 
-  digitalWrite(LED_BUILTIN_RX, phase);
-  digitalWrite(LED_BUILTIN_TX, !phase);
+  digitalWrite(LED_BUILTIN_RX, !phaseA);
+  digitalWrite(LED_BUILTIN_TX, !phaseB);
 }
 
 uint64_t lastoutputupdatems = 0;
