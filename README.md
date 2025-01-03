@@ -25,7 +25,7 @@ Pin|Beschreibung
 `RAW` | `5V` Spannungsversorgung
 `GND` | Masse
 `RST` | Ein optionaler Taster zwischen `GND` und `RST` erlaubt einfaches neustarten des Mikrocontrollers
-`2` | [Optokoppeltes DCC Signal](https://www.modellbahn-digitaltechnik.de/wp-content/uploads/2020/06/DCCanMikrocontroller.jpg)
+`2` | [Optokoppeltes DCC Signal](https://web.archive.org/web/20230927191924/https://www.modellbahn-digitaltechnik.de/wp-content/uploads/2020/06/DCCanMikrocontroller.jpg)
 `3` | orangene LEDs beider Überwachersignale
 `5` | weiße LED Überwachersignal 1
 `6` | weiße LED Überwachersignal 2
