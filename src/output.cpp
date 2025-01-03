@@ -29,10 +29,12 @@ halogenlamp weissBWlamp = halogenlamp(PIN_WEISS_BW, false);
 bool blinkenBU = false;
 halogenlamp blinkenBUphaseA = halogenlamp(PIN_BU_1, false);
 halogenlamp blinkenBUphaseB = halogenlamp(PIN_BU_2, false);
-halogenlamp orange = halogenlamp(PIN_ORANGE, true);
+halogenlamp orange = halogenlamp(PIN_ORANGE, false);
 
 void setupPWM();
 void highResAnalogWrite(uint8_t pin, uint16_t value);
+bool readOnOffState();
+void writeOnOffState(bool state);
 
 void setupOutput() {
   pinMode(LED_BUILTIN_RX, OUTPUT);
@@ -40,6 +42,7 @@ void setupOutput() {
   digitalWrite(LED_BUILTIN_RX, true);
   digitalWrite(LED_BUILTIN_TX, true);
   setupPWM();
+  orange.nextState = readOnOffState();
 }
 
 void processRequestedStateChange(uint8_t outputpair, bool direction) {
@@ -64,6 +67,7 @@ void processRequestedStateChange(uint8_t outputpair, bool direction) {
       Serial.print("orange = ");
       Serial.println(direction);
       orange.nextState = direction;
+      writeOnOffState(orange.nextState);
       if (!direction) {
         weissBW = false;
         weissLS = false;
